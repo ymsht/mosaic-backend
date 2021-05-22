@@ -2,24 +2,24 @@ package model
 
 import (
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
 	"gopkg.in/gorp.v1"
 )
 
 // Art 芸術情報
 type Art struct {
-	ArtName              string    `db:"art_name"`
-	ArtNameEn            string    `db:"art_name_en"`
-	YearOfProductionFrom time.Time `db:"year_of_production_from"`
-	YearOfProductionTo   time.Time `db:"year_of_production_to"`
-	Evaluation           float32   `db:"evaluation"`
-	Height               float32   `db:"height"`
-	Width                float32   `db:"width"`
-	FileUrl              string    `db:"file_url"`
-	AuthorName           string    `db:"author_name"`
-	SuppliesName         string    `db:"supplies_name"`
-	CollectionName       string    `db:"collection_name"`
-	PaintName            string    `db:"paint_name"`
+	ArtName              string    `db:"art_name" json:"art_name"`
+	ArtNameEn            string    `db:"art_name_en" json:"art_name_en"`
+	YearOfProductionFrom mysql.NullTime `db:"year_of_production_from" json:"year_of_production_from"`
+	YearOfProductionTo   mysql.NullTime `db:"year_of_production_to" json:"year_of_production_to"`
+	Evaluation           float32   `db:"evaluation" json:"evaluation"`
+	Height               float32   `db:"height" json:"height"`
+	Width                float32   `db:"width" json:"width"`
+	FileUrl              string    `db:"file_url" json:"json"`
+	AuthorName           sql.NullString    `db:"author_name" json:"author_name"`
+	SuppliesName         sql.NullString    `db:"supplies_name" json:"supplies_name"`
+	CollectionName       sql.NullString    `db:"collection_name" json:"collection_name"`
+	PaintName            sql.NullString    `db:"paint_name" json:"paint_name"`
 }
 
 // GetArts 芸術情報を検索します
@@ -58,7 +58,7 @@ from
   inner join collection on art.collection_id = collection.collection_id 
   inner join paint on art.paint_id = paint.paint_id 
 order by
-  art.id
+  art.art_id
 		`)
 	if err != nil {
 		return arts, err
